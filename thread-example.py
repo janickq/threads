@@ -27,9 +27,11 @@ if __name__ == "__main__":
     thread2 = Thread(target = obj_threading1, args = (10, ))
     thread3 = Thread(target = obj_threading2, args = (10, ))
     thread.start()
-    thread.join()
+    
     thread2.start()
-    thread2.join()
+    
     thread3.start()
     thread3.join()
+    thread.join()
+    thread2.join()
     print("thread finished...exiting")
