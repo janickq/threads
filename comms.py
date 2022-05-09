@@ -13,7 +13,7 @@ class comms:
         self.cond = threading.Condition()
         self.notified = [False]
         self.sd = NetworkTables.getTable("SmartDashboard")
-        NetworkTables.initialize(server='10.43.21.2')
+        NetworkTables.initialize(server='10.86.0.2')
         NetworkTables.addConnectionListener(self.connectionListener, immediateNotify=True)
 
                 

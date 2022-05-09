@@ -12,12 +12,15 @@ m_flag = False
 def master(args):
     global m_flag
     while True:
-        while comm.notified[0]:
+        if comm.notified[0]:
             if cmd.CommandID == comm.read_string("CommandID"):
                 m_flag = True
             else:
                 m_flag = False
             sleep(1)
+        else:
+            print('waiting for connection...')
+            sleep(5)
 
 
 def command_thread(args):#commands
@@ -27,10 +30,9 @@ def command_thread(args):#commands
 def comms_thread(ags):
     global m_flag
     while True:
-        while m_flag:
-            while comm.notified[0]:
-                print("comm_thread active")
-                sleep(1)
+        if m_flag:
+            print("comm_thread active")
+            sleep(1)
     
     
     
