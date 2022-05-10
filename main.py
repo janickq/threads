@@ -13,6 +13,7 @@ comm = comms()
 cmd = commands()
 m_flag = False
 
+#master thread
 def master(args):
     global m_flag
     while True:
@@ -55,31 +56,24 @@ def detector_thread(args):
             print("cam offline")
             sleep(1)
     
-# def cam_thread(args):
-#     global m_flag
-#     while True:
-#         if m_flag:
-#             print("cam_thread active")
-#             stream.update()
-#             img = stream.read()
-#             cv2.imshow("stream", img)
-#             # detector(stream.read)
-#             cv2.waitKey(1)
-        
-            
 
-    
-    
+
 
 if __name__ == "__main__":
+
+    #create threads
     masterthread = Thread(target = master, args = (10, ))
     commsthread = Thread(target = comms_thread, args = (10, ))
     cmdthread = Thread(target = command_thread, args = (10, ))
     detectorthread = Thread(target = detector_thread, args = (10, ))
+
+    #start threads
     masterthread.start()
     detectorthread.start()
     commsthread.start()
     print("thread started")
+
+    #end threads
     masterthread.join()
     camthread.join()
     commsthread.join()
