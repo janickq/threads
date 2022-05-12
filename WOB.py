@@ -5,17 +5,21 @@ import transform
 
 class WOB:
     def process_image(image):
-        kernel = np.ones((6, 6), np.uint8)
+        kernel = np.ones((5, 5), np.uint8)
         binary_img = cv2.erode(image, kernel, iterations = 1)
         return binary_img
     
     def getWOB(image):
         
         imagecopy = image.copy()
+        image = cv2.resize(image, (640,480))
+        kernel = np.ones((5, 5), np.uint8)
+        image = cv2.erode(image, kernel, iterations = 1)
+        cv2.imshow("sasd", image)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         thresh = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,41,11)
         
-        cv2.imshow("thresh", thresh)
+        cv2.imshow("thresh", cv2.resize(thresh, (640,480)))
         
         # Filter out all numbers and noise to isolate only boxes
         cnts = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -39,14 +43,16 @@ class WOB:
         xmin, ymin = np.min(alist, axis = 0)
         rect = [[xmax, ymin], [xmin, ymin], [xmax, ymax], [xmin, ymax]]
         mask = np.zeros((gray.shape),np.uint8)
+        
+    
         cv2.drawContours(mask,[best_cnt],0,255,-1)
         cv2.drawContours(mask,[best_cnt],0,0,2)
-        result = transform.perspective_transform(mask, imagecopy, rect)
+
+    
+        result = transform.perspective_transform(mask, cv2.resize(imagecopy,(640,480)), rect)
         result = result[ymin:ymax, xmin:xmax]
-        cv2.imshow("mask", result)
-        cv2.destroyWindow("thresh")
-        cv2.destroyWindow("mask")
-        result = cv2.resize(result,(1000,1000))
+        result = cv2.flip(result, 1)
+        result = cv2.resize(result, (640,640), interpolation=cv2.INTER_CUBIC)
         
         return result, max_area
     

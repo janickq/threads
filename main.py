@@ -1,3 +1,4 @@
+#imports
 from multiprocessing.connection import wait
 from threading import Thread
 from comms import comms
@@ -5,15 +6,27 @@ from time import sleep
 from commands import commands
 from detector2 import detector2
 from cam import cam
+from WOB import WOB
 import cv2
 
+#initialize objects
 stream = cam()
 detector = detector2("models/model.tflite", "models/labels.txt")
 comm = comms()
 cmd = commands()
 m_flag = False
 
-#master thread
+
+#misc functions
+def cmd_sync(args):
+    pass
+
+
+def get_workorder(args):
+    pass
+    
+
+#program threads
 def master(args):
     global m_flag
     while True:
@@ -38,16 +51,23 @@ def comms_thread(args):
         if m_flag:
             print("comm_thread active")
             sleep(1)
+
     
 def detector_thread(args):
     global m_flag
     while True:
         if m_flag:
             img = stream.read()
+            img = cv2.resize(img,(640,480))
+            cv2.imshow("stream", img)
+            result, max_area = WOB.getWOB(img)
             # cv2.imshow('img', img)
             # cv2.waitKey(1)
-            detected = detector.run(img)
+            detected, items, count = detector.run(result)
             print("detector running")
+            deliver, ret = WOB.sort_grid(detected, items)
+            print(deliver)
+            print(ret)
             cv2.imshow("detector", detected)
             cv2.waitKey(1)
             sleep(1)
