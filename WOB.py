@@ -12,7 +12,7 @@ class WOB:
     def getWOB(image):
         
         imagecopy = image.copy()
-        image = cv2.resize(image, (640,480))
+        # image = cv2.resize(image, (640,480))
         kernel = np.ones((5, 5), np.uint8)
         image = cv2.erode(image, kernel, iterations = 1)
         cv2.imshow("sasd", image)
@@ -27,9 +27,10 @@ class WOB:
         max_area = 0
         c = 0
         s = 0
+        
         for i in cnts:
             area = cv2.contourArea(i)
-            if area > 8000:
+            if area > 8000*:
                     if area > max_area:
                         max_area = area
                         best_cnt = i
@@ -39,6 +40,7 @@ class WOB:
         if s == 0:
             return False
         alist = best_cnt.reshape(best_cnt.shape[0], best_cnt.shape[2])
+        cv2.imwrite("debug2.txt", alist)
         xmax, ymax = np.max(alist, axis = 0)
         xmin, ymin = np.min(alist, axis = 0)
         rect = [[xmax, ymin], [xmin, ymin], [xmax, ymax], [xmin, ymax]]
@@ -49,7 +51,7 @@ class WOB:
         cv2.drawContours(mask,[best_cnt],0,0,2)
 
     
-        result = transform.perspective_transform(mask, cv2.resize(imagecopy,(640,480)), rect)
+        result = transform.perspective_transform(mask, imagecopy, rect)
         result = result[ymin:ymax, xmin:xmax]
         result = cv2.flip(result, 1)
         result = cv2.resize(result, (640,640), interpolation=cv2.INTER_CUBIC)
