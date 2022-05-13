@@ -57,8 +57,9 @@ def detector_thread(args):
     global m_flag
     while True:
         if m_flag:
-            img = stream.read()
-            img = cv2.resize(img,(640,480))
+            img = cv2.imread("imgs/image3.jpg")
+            # img = stream.read()
+            # img = cv2.resize(img,(640,480))
             cv2.imshow("stream", img)
             result, max_area = WOB.getWOB(img)
             # cv2.imshow('img', img)
