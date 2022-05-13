@@ -10,7 +10,7 @@ from WOB import WOB
 import cv2
 
 #initialize objects
-stream = cam()
+stream = cam((1920,1080))
 detector = detector2("models/model.tflite", "models/labels.txt")
 comm = comms()
 cmd = commands()
