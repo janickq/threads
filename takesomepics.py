@@ -5,7 +5,7 @@ from time import sleep
 pictaker = cam((2000,2000))
 
 for i in range(5):
-    img = pictaker.read()
-    cv2.imwrite("imgs/image"+i+".jpg", img)
+    img = "asd"
+    cv2.imwrite("imgs/image"+str(i)+".jpg", img)
     sleep(2)
     
