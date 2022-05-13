@@ -7,7 +7,7 @@ from threading import Thread
 
 class cam:
     """Camera object that controls video streaming from the Picamera"""
-    def __init__(self,resolution):
+    def __init__(self,resolution ):
         # Initialize the PiCamera and the camera image stream
         self.stream = cv2.VideoCapture(0)
         self.start
