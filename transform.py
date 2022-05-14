@@ -4,6 +4,7 @@ import cv2
 
     
 def perspective_transform(mask, img, rect):
+    imH, imW, _ = img.shape
     corners = find_corners(mask)
     # print(corners)
     rows,cols = mask.shape
@@ -14,7 +15,7 @@ def perspective_transform(mask, img, rect):
     pts2 = np.float32(rect)
     M = cv2.getPerspectiveTransform(pts1,pts2)
     # print(M)
-    dst = cv2.warpPerspective(img,M,(640,640))
+    dst = cv2.warpPerspective(img,M,(imW, imH))
     return dst
 
 def find_corners(img):
@@ -33,7 +34,7 @@ def find_corners(img):
         cv2.putText(img, str(x), (int(corners[i,0]), int(corners[i,1])), cv2.FONT_HERSHEY_COMPLEX, 0.5, (125,125,125), 2)
         x = x+1
     
-    cv2.imshow('image', cv2.resize(img,(640,480)))
+    cv2.imshow('image', cv2.resize(img,(640,640)))
     cv2.waitKey(1)
     
     return corners

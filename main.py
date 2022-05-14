@@ -5,12 +5,13 @@ from comms import comms
 from time import sleep
 from commands import commands
 from detector2 import detector2
-from cam import cam
+# from cam import cam
 from WOB import WOB
 import cv2
+from cam2 import cam2
 
 #initialize objects
-stream = cam((1920,1080))
+# stream = cam((1920,1080))
 detector = detector2("models/model.tflite", "models/labels.txt")
 comm = comms()
 cmd = commands()
@@ -54,10 +55,11 @@ def comms_thread(args):
 
     
 def detector_thread(args):
+    global deliver, ret
     global m_flag
     while True:
         if m_flag:
-            img = cv2.imread("imgs/image3.jpg")
+            img = cv2.imread("imgs/image4 (2).jpg")
             # img = stream.read()
             # img = cv2.resize(img,(640,480))
             cv2.imshow("stream", img)
@@ -70,12 +72,20 @@ def detector_thread(args):
             print(deliver)
             print(ret)
             cv2.imshow("detector", detected)
-            cv2.waitKey(1)
-            sleep(1)
+            cv2.waitKey(1000)
             
         else:
             print("cam offline")
             sleep(1)
+            
+            
+def cam(args):
+    while True:
+        img = cam2.capture()
+        print(img.shape)
+        cv2.imshow("raspistill capture", cv2.resize(img, (640,480)))
+        cv2.waitKey(1)
+        # sleep(1)
     
 
 
@@ -87,16 +97,18 @@ if __name__ == "__main__":
     commsthread = Thread(target = comms_thread, args = (10, ))
     cmdthread = Thread(target = command_thread, args = (10, ))
     detectorthread = Thread(target = detector_thread, args = (10, ))
-
+    camthread = Thread(target = cam, args = (10, ))
+    
     #start threads
     masterthread.start()
-    detectorthread.start()
+    # detectorthread.start()
     commsthread.start()
+    camthread.start()
     print("thread started")
 
     #end threads
     masterthread.join()
-    camthread.join()
+    # camthread.join()
     commsthread.join()
     
     

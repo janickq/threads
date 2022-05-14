@@ -15,11 +15,11 @@ class WOB:
         # image = cv2.resize(image, (640,480))
         kernel = np.ones((5, 5), np.uint8)
         image = cv2.erode(image, kernel, iterations = 1)
-        cv2.imshow("sasd", image)
+        # cv2.imshow("sasd", image)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         thresh = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,41,11)
         
-        cv2.imshow("thresh", cv2.resize(thresh, (640,480)))
+        # cv2.imshow("thresh", cv2.resize(thresh, (640,480)))
         
         # Filter out all numbers and noise to isolate only boxes
         cnts = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -30,7 +30,7 @@ class WOB:
         
         for i in cnts:
             area = cv2.contourArea(i)
-            if area > 8000*:
+            if area > 8000*7:
                     if area > max_area:
                         max_area = area
                         best_cnt = i
@@ -40,7 +40,7 @@ class WOB:
         if s == 0:
             return False
         alist = best_cnt.reshape(best_cnt.shape[0], best_cnt.shape[2])
-        cv2.imwrite("debug2.txt", alist)
+        
         xmax, ymax = np.max(alist, axis = 0)
         xmin, ymin = np.min(alist, axis = 0)
         rect = [[xmax, ymin], [xmin, ymin], [xmax, ymax], [xmin, ymax]]
@@ -54,7 +54,9 @@ class WOB:
         result = transform.perspective_transform(mask, imagecopy, rect)
         result = result[ymin:ymax, xmin:xmax]
         result = cv2.flip(result, 1)
-        result = cv2.resize(result, (640,640), interpolation=cv2.INTER_CUBIC)
+        # result = cv2.resize(result, (640,640), interpolation=cv2.INTER_CUBIC)
+        cv2.imshow("result", result)
+        cv2.waitKey(2)
         
         return result, max_area
     

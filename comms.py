@@ -1,3 +1,4 @@
+import socket
 from networktables import NetworkTables
 from threading import Thread
 import threading
@@ -13,7 +14,7 @@ class comms:
         self.cond = threading.Condition()
         self.notified = [False]
         self.sd = NetworkTables.getTable("SmartDashboard")
-        NetworkTables.initialize(server='10.86.2.2')
+        NetworkTables.initialize(server = "10.41.32.2")
         NetworkTables.addConnectionListener(self.connectionListener, immediateNotify=True)
 
                 
