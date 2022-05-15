@@ -101,9 +101,9 @@ if __name__ == "__main__":
     
     #start threads
     masterthread.start()
-    # detectorthread.start()
+    detectorthread.start()
     commsthread.start()
-    camthread.start()
+    # camthread.start()
     print("thread started")
 
     #end threads

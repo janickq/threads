@@ -51,8 +51,8 @@ class detector2:
         # cv2.imshow("debugdetector", image)
         # image = cv2.imread(image_path)
         
-        # image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image_rgb = image
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        # image_rgb = image
         checkrgb = Image.fromarray(image)
         mode = checkrgb.mode
         # cv2.imshow("rgb", image_rgb)
