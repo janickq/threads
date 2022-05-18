@@ -9,10 +9,11 @@ from detector2 import detector2
 from WOB import WOB
 import cv2
 from cam2 import cam2
+from cam import cam
 
 #initialize objects
-# stream = cam((1920,1080))
-detector = detector2("models/model.tflite", "models/labels.txt")
+# stream = cam((1200,1200))
+detector = detector2("models/model320.tflite", "models/labels.txt")
 comm = comms()
 cmd = commands()
 m_flag = False
@@ -25,7 +26,7 @@ def cmd_sync(args):
 
 def get_workorder(args):
     pass
-    
+
 
 #program threads
 def master(args):
@@ -59,7 +60,8 @@ def detector_thread(args):
     global m_flag
     while True:
         if m_flag:
-            img = cv2.imread("imgs/image4 (2).jpg")
+            img = cam2.capture()
+            # img = cv2.imread("imgs/image4 (2).jpg")
             # img = stream.read()
             # img = cv2.resize(img,(640,480))
             cv2.imshow("stream", img)
@@ -72,20 +74,20 @@ def detector_thread(args):
             print(deliver)
             print(ret)
             cv2.imshow("detector", detected)
-            cv2.waitKey(1000)
+            cv2.waitKey(1)
             
         else:
             print("cam offline")
             sleep(1)
             
             
-def cam(args):
-    while True:
-        img = cam2.capture()
-        print(img.shape)
-        cv2.imshow("raspistill capture", cv2.resize(img, (640,480)))
-        cv2.waitKey(1)
-        # sleep(1)
+# def cam(args):
+#     while True:
+        
+#         print(img.shape)
+#         cv2.imshow("raspistill capture", cv2.resize(img, (640,480)))
+#         cv2.waitKey(1)
+#         # sleep(1)
     
 
 
@@ -97,7 +99,7 @@ if __name__ == "__main__":
     commsthread = Thread(target = comms_thread, args = (10, ))
     cmdthread = Thread(target = command_thread, args = (10, ))
     detectorthread = Thread(target = detector_thread, args = (10, ))
-    camthread = Thread(target = cam, args = (10, ))
+    # camthread = Thread(target = cam, args = (10, ))
     
     #start threads
     masterthread.start()

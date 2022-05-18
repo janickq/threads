@@ -53,8 +53,7 @@ class detector2:
         
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         # image_rgb = image
-        checkrgb = Image.fromarray(image)
-        mode = checkrgb.mode
+  
         # cv2.imshow("rgb", image_rgb)
         imH, imW, _ = image.shape
         image_resized = cv2.resize(image_rgb, (self.width, self.height))
@@ -77,7 +76,7 @@ class detector2:
         
         # Loop over all detections and draw detection box if confidence is above minimum threshold
         for i in range(len(scores)):
-            if ((scores[i] > 0.5) and (scores[i] <= 1.0)):
+            if ((scores[i] > 0.9) and (scores[i] <= 1.0)):
                 count += 1
                 # Get bounding box coordinates and draw box
                 # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
