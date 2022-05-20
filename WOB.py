@@ -55,8 +55,8 @@ class WOB:
         result = result[ymin:ymax, xmin:xmax]
         result = cv2.flip(result, 1)
         # result = cv2.resize(result, (640,640), interpolation=cv2.INTER_CUBIC)
-        cv2.imshow("result", result)
-        cv2.waitKey(2)
+        # cv2.imshow("result", result)
+        # cv2.waitKey(1)
         
         return result, max_area
     

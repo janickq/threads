@@ -12,7 +12,7 @@ from cam2 import cam2
 from cam import cam
 
 #initialize objects
-# stream = cam((1200,1200))
+stream = cam((1200,1200))
 detector = detector2("models/model320.tflite", "models/labels.txt")
 comm = comms()
 cmd = commands()
@@ -40,7 +40,7 @@ def master(args):
             sleep(1)
         else:
             print('waiting for connection...')
-            sleep(5)
+            sleep(3)
 
 
 def command_thread(args):#commands
@@ -60,19 +60,18 @@ def detector_thread(args):
     global m_flag
     while True:
         if m_flag:
-            img = cam2.capture()
+            # img = cam2.capture()
             # img = cv2.imread("imgs/image4 (2).jpg")
-            # img = stream.read()
+            img = stream.read()
             # img = cv2.resize(img,(640,480))
-            cv2.imshow("stream", img)
+            # cv2.imshow("stream", img)
             result, max_area = WOB.getWOB(img)
             # cv2.imshow('img', img)
             # cv2.waitKey(1)
             detected, items, count = detector.run(result)
             print("detector running")
             deliver, ret = WOB.sort_grid(detected, items)
-            print(deliver)
-            print(ret)
+
             cv2.imshow("detector", detected)
             cv2.waitKey(1)
             

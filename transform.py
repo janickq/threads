@@ -19,7 +19,6 @@ def perspective_transform(mask, img, rect):
     return dst
 
 def find_corners(img):
-    # cv2.destroyWindow('image')
     img = cv2.blur(img, (5,5))
     dst = cv2.cornerHarris(img,20,3,0.04)
     ret, dst = cv2.threshold(dst,0.1*dst.max(),255,0)
@@ -34,7 +33,7 @@ def find_corners(img):
         cv2.putText(img, str(x), (int(corners[i,0]), int(corners[i,1])), cv2.FONT_HERSHEY_COMPLEX, 0.5, (125,125,125), 2)
         x = x+1
     
-    cv2.imshow('image', cv2.resize(img,(640,640)))
-    cv2.waitKey(1)
+    # cv2.imshow('image', cv2.resize(img,(640,640)))
+    # cv2.waitKey(1)
     
     return corners
