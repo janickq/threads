@@ -3,7 +3,7 @@ from multiprocessing.connection import wait
 from threading import Thread
 from comms import comms
 from time import sleep
-from commands import commands
+from command import command
 from detector2 import detector2
 # from cam import cam
 from WOB import WOB
@@ -15,7 +15,7 @@ from cam import cam
 stream = cam((1200,1200))
 detector = detector2("models/model320.tflite", "models/labels.txt")
 comm = comms()
-cmd = commands()
+cmd = command()
 m_flag = False
 
 
@@ -32,15 +32,16 @@ def get_workorder(args):
 def master(args):
     global m_flag
     while True:
+        print(comm.read_string("CommandID"))
         if comm.notified[0]:
-            if cmd.CommandID == comm.read_string("CommandID"):
+            if cmd.CommandID >= comm.read_string("CommandID"):
                 m_flag = True
             else:
                 m_flag = False
             sleep(1)
         else:
             print('waiting for connection...')
-            sleep(3)
+            sleep(1)
 
 
 def command_thread(args):#commands
@@ -102,7 +103,7 @@ if __name__ == "__main__":
     
     #start threads
     masterthread.start()
-    detectorthread.start()
+    # detectorthread.start()
     commsthread.start()
     # camthread.start()
     print("thread started")

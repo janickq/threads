@@ -14,7 +14,7 @@ class comms:
         self.cond = threading.Condition()
         self.notified = [False]
         self.sd = NetworkTables.getTable("SmartDashboard")
-        NetworkTables.initialize(server = "10.86.2.2")
+        NetworkTables.initialize(server = "10.41.32.2")
         NetworkTables.addConnectionListener(self.connectionListener, immediateNotify=True)
 
                 
@@ -27,7 +27,8 @@ class comms:
         print("Connected!")
     
     def send_command(self, command):
-        self.sd.putstring(command)
+        
+        self.sd.putString(command)
         
     def read_string(self, str):
         return self.sd.getString(str, defaultValue = 0)
